@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Buscador de Materias</title>
+<title>Horarios Uniatlantico</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -92,7 +92,7 @@
 <body>
 
 <div class="container">
-    <h1> Horarios Uniatlantico</h1>
+    <h1>Horarios Uniatlantico</h1>
     <p class="sub">Busca por <strong>código</strong> o <strong>nombre</strong> de la materia</p>
 
     <input 
@@ -107,7 +107,7 @@
 </div>
 
 <footer>
-    Academy system • GitHub Pages
+    Sistema académico • GitHub Pages
 </footer>
 
 <script>
@@ -139,7 +139,7 @@ function buscarMateria() {
         m["NOMBRE DE LA MATERIA"].toLowerCase().includes(texto)
     );
 
-    if (filtradas.length === 0) 
+    if (filtradas.length === 0) {
         mensajeDiv.innerText = "❌ No se encontraron materias";
         return;
     }
