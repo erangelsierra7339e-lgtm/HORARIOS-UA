@@ -99,14 +99,14 @@ footer {
 <body>
 
 <div class="container">
-    <h1>📚 Buscador de Materias</h1>
-    <p class="sub">Busca por <strong>código</strong> o <strong>nombre</strong> de la materia</p>
+    <h1>Horario Uniatlantico</h1>
+    <p class="sub">Busca por <strong>código</strong> de la materia</p>
 
     <div class="buscador">
         <input
-            type="text"
+            type="number"
             id="busqueda"
-            placeholder="Ej: DER101, Matemáticas, Programación..."
+            placeholder="Ej: 000000"
             oninput="buscarMateria()"
         >
     </div>
@@ -118,7 +118,7 @@ footer {
     <div id="resultados" class="resultados"></div>
 
     <footer>
-        Sistema académico • GitHub Pages
+        Timetable system • GitHub Pages
     </footer>
 </div>
 
@@ -154,7 +154,7 @@ function buscarMateria() {
     );
 
     if (filtradas.length === 0) {
-        mensaje.innerText = "❌ No se encontraron materias";
+        mensaje.innerText = "No se encontraro ninguna materia con este codigo";
         return;
     }
 
