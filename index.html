@@ -130,6 +130,10 @@ footer {
 const API_URL = "https://sheetdb.io/api/v1/lsy9qnnkr1emc";
 let materias = [];
 
+document.getElementById("nombre").innerText =
+    localStorage.getItem("nombre") || "Usuario";
+
+
 // Cargar datos al iniciar
 fetch(API_URL)
     .then(res => res.json())
