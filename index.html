@@ -92,7 +92,7 @@
 <body>
 
 <div class="container">
-    <h1>📚 Buscador de Materias</h1>
+    <h1> Horarios Uniatlantico</h1>
     <p class="sub">Busca por <strong>código</strong> o <strong>nombre</strong> de la materia</p>
 
     <input 
@@ -107,7 +107,7 @@
 </div>
 
 <footer>
-    Sistema académico • GitHub Pages
+    Academy system • GitHub Pages
 </footer>
 
 <script>
@@ -139,175 +139,7 @@ function buscarMateria() {
         m["NOMBRE DE LA MATERIA"].toLowerCase().includes(texto)
     );
 
-    if (filtradas.length === 0) {
-        mensajeDiv.innerText = "❌ No se encontraron materias";
-        return;
-    }
-
-    mensajeDiv.innerText = `Se encontraron ${filtradas.length} resultado(s)`;
-
-    filtradas.forEach(m => {
-        resultadosDiv.innerHTML += `
-            <div class="card">
-                <h3>${m["NOMBRE DE LA MATERIA"]}</h3>
-                <p><strong>Código:</strong> ${m.CODIGO}</p>
-                <p><strong>Semestre:</strong> ${m.SEMESTRE}</p>
-                <p><strong>Créditos:</strong> ${m.CREDITOS}</p>
-                <p><strong>Grupo:</strong> ${m.GRUPO}</p>
-                <p><strong>Día:</strong> ${m.DIA}</p>
-                <p><strong>Horario:</strong> ${m["HORA INICIO"]} - ${m["HORA FIN"]}</p>
-                <p><strong>Salón:</strong> ${m.SALON}</p>
-                <p><strong>Docente:</strong> ${m.DOCENTE}</p>
-            </div>
-        `;
-    });
-}
-</script>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<title>Buscador de Materias</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-    body {
-        font-family: 'Segoe UI', sans-serif;
-        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-        margin: 0;
-        padding: 20px;
-        color: #333;
-    }
-
-    .container {
-        max-width: 900px;
-        margin: auto;
-        background: #ffffff;
-        padding: 25px;
-        border-radius: 12px;
-        box-shadow: 0 15px 30px rgba(0,0,0,0.25);
-    }
-
-    h1 {
-        text-align: center;
-        color: #1a2a3a;
-        margin-bottom: 10px;
-    }
-
-    p.sub {
-        text-align: center;
-        color: #555;
-        margin-bottom: 25px;
-    }
-
-    input {
-        width: 100%;
-        padding: 15px;
-        font-size: 16px;
-        border-radius: 8px;
-        border: 2px solid #ccc;
-        outline: none;
-        transition: 0.3s;
-    }
-
-    input:focus {
-        border-color: #007bff;
-    }
-
-    .resultados {
-        margin-top: 25px;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 15px;
-    }
-
-    .card {
-        background: #f4f7fb;
-        padding: 15px;
-        border-radius: 10px;
-        border-left: 6px solid #007bff;
-    }
-
-    .card h3 {
-        margin: 0 0 10px;
-        color: #007bff;
-    }
-
-    .card p {
-        margin: 4px 0;
-        font-size: 14px;
-    }
-
-    .mensaje {
-        margin-top: 20px;
-        text-align: center;
-        font-weight: bold;
-        color: #888;
-    }
-
-    footer {
-        margin-top: 30px;
-        text-align: center;
-        font-size: 13px;
-        color: #777;
-    }
-</style>
-</head>
-
-<body>
-
-<div class="container">
-    <h1>📚 Buscador de Materias</h1>
-    <p class="sub">Busca por <strong>código</strong> o <strong>nombre</strong> de la materia</p>
-
-    <input 
-        type="text" 
-        id="busqueda" 
-        placeholder="Ej: DER101, Matemáticas, Programación..."
-        oninput="buscarMateria()"
-    >
-
-    <div id="mensaje" class="mensaje">Escribe para buscar una materia</div>
-    <div id="resultados" class="resultados"></div>
-</div>
-
-<footer>
-    Sistema académico • GitHub Pages
-</footer>
-
-<script>
-const API_URL = "https://sheetdb.io/api/v1/lsy9qnnkr1emc";
-let materias = [];
-
-// Cargar datos al iniciar
-fetch(API_URL)
-    .then(res => res.json())
-    .then(data => materias = data)
-    .catch(() => {
-        document.getElementById("mensaje").innerText = "Error al cargar las materias";
-    });
-
-function buscarMateria() {
-    const texto = document.getElementById("busqueda").value.toLowerCase();
-    const resultadosDiv = document.getElementById("resultados");
-    const mensajeDiv = document.getElementById("mensaje");
-
-    resultadosDiv.innerHTML = "";
-
-    if (texto.length === 0) {
-        mensajeDiv.innerText = "Escribe para buscar una materia";
-        return;
-    }
-
-    const filtradas = materias.filter(m =>
-        m.CODIGO.toLowerCase().includes(texto) ||
-        m["NOMBRE DE LA MATERIA"].toLowerCase().includes(texto)
-    );
-
-    if (filtradas.length === 0) {
+    if (filtradas.length === 0) 
         mensajeDiv.innerText = "❌ No se encontraron materias";
         return;
     }
