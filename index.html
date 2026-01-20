@@ -3,88 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscador de Horarios Universitario</title>
+    <title>Buscador de Horarios - Facultad de Derecho</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .materia-card { transition: all 0.3s ease; }
+        .materia-card:hover { transform: translateY(-5px); }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen text-slate-900">
+<body class="bg-slate-50 min-h-screen">
 
-    <div class="max-w-4xl mx-auto px-4 py-12">
+    <div class="max-w-5xl mx-auto px-4 py-10">
         <header class="text-center mb-12">
-            <h1 class="text-4xl font-extrabold text-indigo-700 mb-2">Horarios de la Carrera</h1>
-            <p class="text-slate-500">Busca por código de asignatura o nombre</p>
+            <span class="text-indigo-600 font-bold tracking-widest uppercase text-sm">Consulta Académica</span>
+            <h1 class="text-5xl font-extrabold text-slate-900 mt-2 mb-4">Horarios de Derecho</h1>
+            <p class="text-slate-500 text-lg">Busca por código o nombre de la asignatura</p>
         </header>
 
-        <div class="relative max-w-lg mx-auto mb-10">
+        <div class="relative max-w-2xl mx-auto mb-12">
             <input type="text" id="buscador" 
-                class="w-full p-4 pl-12 rounded-2xl border-none shadow-xl focus:ring-2 focus:ring-indigo-500 outline-none text-lg"
-                placeholder="Ej: INF102...">
-            <span class="absolute left-4 top-4 text-slate-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                class="w-full p-5 pl-14 rounded-2xl border-none shadow-2xl focus:ring-4 focus:ring-indigo-500/20 outline-none text-xl placeholder-slate-400"
+                placeholder="Ej: 52150 o Historia...">
+            <div class="absolute left-5 top-5 text-slate-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-            </span>
+            </div>
         </div>
 
-        <div id="lista-horarios" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div id="lista-horarios" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             </div>
 
-        <div id="mensaje" class="text-center text-slate-400 mt-10 hidden">
-            No se encontraron asignaturas con ese código.
+        <div id="estado" class="text-center text-slate-400 mt-10 hidden italic">
+            Buscando en la base de datos...
         </div>
     </div>
 
     <script>
-        const API_URL = "https://sheetdb.io/api/v1/lsy9qnnkr1emc"; // <--- PEGA TU URL DE SHEETDB AQUÍ
+        // REEMPLAZA ESTA URL CON LA TUYA DE SHEETDB
+        const API_URL = "https://sheetdb.io/api/v1/lsy9qnnkr1emc"; 
 
         const buscador = document.getElementById('buscador');
         const contenedor = document.getElementById('lista-horarios');
-        const mensaje = document.getElementById('mensaje');
+        const estado = document.getElementById('estado');
 
         buscador.addEventListener('input', (e) => {
-            const busqueda = e.target.value;
+            const query = e.target.value.trim();
             
-            if (busqueda.length > 2) {
-                // Buscamos tanto por Código como por Nombre (ajusta los nombres a tus columnas)
-                fetch(`${API_URL}/search?Codigo=${busqueda}&Materia=${busqueda}&casesensitive=false&or=true`)
-                    .then(response => response.json())
+            if (query.length > 2) {
+                estado.classList.remove('hidden');
+                estado.innerText = "Buscando...";
+                
+                // Buscamos en CODIGO o NOMBRE DE LA MATERIA
+                fetch(`${API_URL}/search?CODIGO=${query}&NOMBRE DE LA MATERIA=${query}&casesensitive=false&or=true`)
+                    .then(res => res.json())
                     .then(data => {
+                        estado.classList.add('hidden');
                         renderizar(data);
+                    })
+                    .catch(err => {
+                        estado.innerText = "Error al conectar con la base de datos.";
                     });
             } else {
                 contenedor.innerHTML = "";
+                estado.classList.add('hidden');
             }
         });
 
         function renderizar(data) {
             contenedor.innerHTML = "";
             if (data.length === 0) {
-                mensaje.classList.remove('hidden');
-            } else {
-                mensaje.classList.add('hidden');
-                data.forEach(item => {
-                    // AQUÍ MAPEA TUS COLUMNAS: item.NombreDeTuColumna
-                    contenedor.innerHTML += `
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-                            <div class="flex justify-between items-start mb-4">
-                                <span class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2.5 py-1 rounded-full uppercase">${item.Codigo}</span>
-                                <span class="text-slate-400 text-sm italic">Semestre ${item.Semestre}</span>
+                estado.classList.remove('hidden');
+                estado.innerText = "No se encontraron resultados.";
+                return;
+            }
+
+            data.forEach(item => {
+                // El campo "DOCENTE" a veces viene vacío, lo manejamos:
+                const profesor = item.DOCENTE && item.DOCENTE !== 'null' ? item.DOCENTE : "Por asignar";
+                
+                contenedor.innerHTML += `
+                    <div class="materia-card bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full uppercase">
+                                    Cód. ${item.CODIGO}
+                                </span>
+                                <span class="text-slate-400 text-xs font-semibold">Semestre ${item.SEMESTRE}</span>
                             </div>
-                            <h3 class="text-xl font-bold text-slate-800 mb-2">${item.Materia}</h3>
-                            <div class="space-y-2 text-slate-600">
-                                <p class="flex items-center text-sm">📅 <span class="ml-2">${item.Dia}</span></p>
-                                <p class="flex items-center text-sm">⏰ <span class="ml-2">${item.Hora}</span></p>
-                                <p class="flex items-center text-sm">📍 <span class="ml-2">Salón: ${item.Salon}</span></p>
-                                <p class="flex items-center text-sm text-indigo-600 font-medium pt-2">👤 <span class="ml-2">${item.Profesor}</span></p>
+                            <h3 class="text-lg font-bold text-slate-800 leading-tight mb-4">${item['NOMBRE DE LA MATERIA']}</h3>
+                            
+                            <div class="space-y-3 text-slate-600">
+                                <div class="flex items-center text-sm bg-slate-50 p-2 rounded-xl">
+                                    <span class="mr-3">📅</span>
+                                    <span class="font-medium">${item.DIA}</span>
+                                </div>
+                                <div class="flex items-center text-sm">
+                                    <span class="mr-3">⏰</span>
+                                    <span>${item['HORA INICIO']} - ${item['HORA FIN']}</span>
+                                </div>
+                                <div class="flex items-center text-sm">
+                                    <span class="mr-3">📍</span>
+                                    <span>Salón: <strong>${item.SALON}</strong></span>
+                                </div>
+                                <div class="flex items-center text-sm">
+                                    <span class="mr-3">👥</span>
+                                    <span>Grupo: ${item.GRUPO} | Créditos: ${item.CREDITOS}</span>
+                                </div>
                             </div>
                         </div>
-                    `;
-                });
-            }
+                        <div class="mt-6 pt-4 border-t border-slate-50">
+                            <p class="text-xs text-slate-400 uppercase tracking-wider mb-1">Docente</p>
+                            <p class="text-sm font-semibold text-indigo-900">${profesor}</p>
+                        </div>
+                    </div>
+                `;
+            });
         }
     </script>
 </body>
