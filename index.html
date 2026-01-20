@@ -2,113 +2,125 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Horarios Uniatlantico</title>
+<title>Buscador de Materias</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-    body {
-        font-family: 'Segoe UI', sans-serif;
-        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-        margin: 0;
-        padding: 20px;
-        color: #333;
-    }
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    .container {
-        max-width: 900px;
-        margin: auto;
-        background: #ffffff;
-        padding: 25px;
-        border-radius: 12px;
-        box-shadow: 0 15px 30px rgba(0,0,0,0.25);
-    }
+.container {
+    width: 90%;
+    max-width: 850px;
+    background: #fff;
+    padding: 30px 25px;
+    border-radius: 14px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    text-align: center;
+}
 
-    h1 {
-        text-align: center;
-        color: #1a2a3a;
-        margin-bottom: 10px;
-    }
+h1 {
+    margin-top: 0;
+    color: #1a2a3a;
+}
 
-    p.sub {
-        text-align: center;
-        color: #555;
-        margin-bottom: 25px;
-    }
+.sub {
+    color: #555;
+    margin-bottom: 25px;
+}
 
-    input {
-        width: 100%;
-        padding: 15px;
-        font-size: 16px;
-        border-radius: 8px;
-        border: 2px solid #ccc;
-        outline: none;
-        transition: 0.3s;
-    }
+.buscador {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
 
-    input:focus {
-        border-color: #007bff;
-    }
+.buscador input {
+    width: 75%;
+    max-width: 480px;
+    padding: 14px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+    outline: none;
+    transition: 0.3s;
+}
 
-    .resultados {
-        margin-top: 25px;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 15px;
-    }
+.buscador input:focus {
+    border-color: #007bff;
+}
 
-    .card {
-        background: #f4f7fb;
-        padding: 15px;
-        border-radius: 10px;
-        border-left: 6px solid #007bff;
-    }
+.mensaje {
+    margin-top: 15px;
+    color: #777;
+    font-weight: 600;
+}
 
-    .card h3 {
-        margin: 0 0 10px;
-        color: #007bff;
-    }
+.resultados {
+    margin-top: 25px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 15px;
+}
 
-    .card p {
-        margin: 4px 0;
-        font-size: 14px;
-    }
+.card {
+    background: #f4f7fb;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: left;
+    border-left: 6px solid #007bff;
+}
 
-    .mensaje {
-        margin-top: 20px;
-        text-align: center;
-        font-weight: bold;
-        color: #888;
-    }
+.card h3 {
+    margin: 0 0 10px;
+    color: #007bff;
+}
 
-    footer {
-        margin-top: 30px;
-        text-align: center;
-        font-size: 13px;
-        color: #777;
-    }
+.card p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+footer {
+    margin-top: 25px;
+    font-size: 13px;
+    color: #888;
+}
 </style>
 </head>
 
 <body>
 
 <div class="container">
-    <h1>Horarios Uniatlantico</h1>
+    <h1>📚 Buscador de Materias</h1>
     <p class="sub">Busca por <strong>código</strong> o <strong>nombre</strong> de la materia</p>
 
-    <input 
-        type="text" 
-        id="busqueda" 
-        placeholder="Ej: DER101, Matemáticas, Programación..."
-        oninput="buscarMateria()"
-    >
+    <div class="buscador">
+        <input
+            type="text"
+            id="busqueda"
+            placeholder="Ej: DER101, Matemáticas, Programación..."
+            oninput="buscarMateria()"
+        >
+    </div>
 
-    <div id="mensaje" class="mensaje">Escribe para buscar una materia</div>
+    <div id="mensaje" class="mensaje">
+        Escribe para buscar una materia
+    </div>
+
     <div id="resultados" class="resultados"></div>
-</div>
 
-<footer>
-    Sistema académico • GitHub Pages
-</footer>
+    <footer>
+        Sistema académico • GitHub Pages
+    </footer>
+</div>
 
 <script>
 const API_URL = "https://sheetdb.io/api/v1/lsy9qnnkr1emc";
@@ -119,18 +131,19 @@ fetch(API_URL)
     .then(res => res.json())
     .then(data => materias = data)
     .catch(() => {
-        document.getElementById("mensaje").innerText = "Error al cargar las materias";
+        document.getElementById("mensaje").innerText =
+            "Error al cargar las materias";
     });
 
 function buscarMateria() {
     const texto = document.getElementById("busqueda").value.toLowerCase();
-    const resultadosDiv = document.getElementById("resultados");
-    const mensajeDiv = document.getElementById("mensaje");
+    const resultados = document.getElementById("resultados");
+    const mensaje = document.getElementById("mensaje");
 
-    resultadosDiv.innerHTML = "";
+    resultados.innerHTML = "";
 
-    if (texto.length === 0) {
-        mensajeDiv.innerText = "Escribe para buscar una materia";
+    if (texto === "") {
+        mensaje.innerText = "Escribe para buscar una materia";
         return;
     }
 
@@ -140,14 +153,14 @@ function buscarMateria() {
     );
 
     if (filtradas.length === 0) {
-        mensajeDiv.innerText = "❌ No se encontraron materias";
+        mensaje.innerText = "❌ No se encontraron materias";
         return;
     }
 
-    mensajeDiv.innerText = `Se encontraron ${filtradas.length} resultado(s)`;
+    mensaje.innerText = `Se encontraron ${filtradas.length} resultado(s)`;
 
     filtradas.forEach(m => {
-        resultadosDiv.innerHTML += `
+        resultados.innerHTML += `
             <div class="card">
                 <h3>${m["NOMBRE DE LA MATERIA"]}</h3>
                 <p><strong>Código:</strong> ${m.CODIGO}</p>
